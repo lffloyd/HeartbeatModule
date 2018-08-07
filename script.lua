@@ -16,12 +16,13 @@ function sleep(n)
 end
 
 --Draws a text on the screen.
-function drawText(rate)
+function drawText(topic, message)
+	call(topic, message)
 	canvas:attrColor('black')
 	canvas:drawRect('fill', 0, 0, canvas:attrSize())
 	canvas:attrFont("vera", 36)
 	canvas:attrColor("white")
-	canvas:drawText(0, 50, rate)
+	canvas:drawText(0, 50, string.format("Topic: %s\tMsg.: %s", topic, message))
 	canvas:flush()
 end
 
@@ -33,7 +34,7 @@ port = 17639
 --Variables for MQTT client use.
 mqtt = require 'paho.mqtt'
 socket = require 'socket'
-client = mqtt.client.create(server, port, call)
+client = mqtt.client.create(server, port, drawText)
 
 client:auth(user, password)
 client:connect('conn_eyre')
